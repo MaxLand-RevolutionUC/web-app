@@ -1,22 +1,16 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>XHR Test</title>
+    <title>CSV File Read</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 </head>
 <body>
-<div id="response_div"></div>
 <script type="application/javascript">
-    var request_button = document.getElementById("request_button");
     var filename = "ytd_2016_clean.csv";
 
     request_file(filename);
-//    request_button.addEventListener('click', function(evt) {
-//        request_file(filename);
-//    });
 
     function request_file(filename) {
         var request_obj = new XMLHttpRequest();
@@ -24,28 +18,29 @@
         request_obj.open("GET", filename);
         request_obj.send();
         request_obj.onload = function () {
-            display_response(request_obj.responseText);
+            getExpectedPrice(request_obj.responseText);
         };
     }
 
-    function display_response(content) {
+    function getExpectedPrice(content) {
 
         var rowString = content.split('\n');
+        // rowString.length = # of rows
+
         var dataMatrix = [[],[],[],[],[],[],[],[],[]];
-
-
         for (var i = 0; i<rowString.length; i++) {
+
             var row = rowString[i].split(',');
+            // row.length = # of columns
+            if (row[3] == 'MAIN') {
+                console.log(row[8]);
+            }
+
             for(var j=0; j<row.length; j++) {
-
                 dataMatrix[i][j] = row[j];
-                console.log(dataMatrix[i][j]);
-
             }
         }
 
-        var response_div = document.getElementById("response_div");
-        response_div.textContent = content;
     }
 </script>
 </body>
